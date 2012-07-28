@@ -37,10 +37,10 @@ def html_page_context(app, pagename, templatename, context, doctree):
     context['toc'] = rendered_toc
     context['display_toc'] = True  # force toctree to display
 
-    def make_toctree(maxdepth=0, prune=False, collapse=True):
+    def make_toctree(collapse=True):
         return get_rendered_toctree(app.builder,
                                     pagename,
-                                    prune=prune,
+                                    prune=False,
                                     collapse=collapse,
                                     )
     context['toctree'] = make_toctree
