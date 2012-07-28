@@ -2,7 +2,12 @@
  History
 =========
 
+1.0
+===
+
+  - First public release
+
 0.1
 ===
 
-  - First public release.
+  - Internal version
