@@ -16,39 +16,51 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-# Todo:
-# - config option to only show titles
-# - insert local toc entries
-# - write tests
 
-
-from docutils import nodes
 from sphinx import addnodes
-from sphinx.util.console import red, brown, darkgreen
-
-
-def builder_inited(app):
-    app.info(red('initializing sphinxcontrib-fulltoc'))
 
 
 def html_page_context(app, pagename, templatename, context, doctree):
-    if pagename in app.env.tocs:
-        app.builder.info('replacing toc for %s' % pagename)
-        # toc = app.env.tocs[pagename].deepcopy()
-        # page_toc = app.builder.render_partial(toc)['fragment']
-        # context['local_toc'] = page_toc
-        # context['toc'] = page_toc
-        env = app.env
-        fulltoc = env.fulltoc_toctree.deepcopy()
-        #print '\n', fulltoc
-        env.resolve_references(fulltoc, pagename, app.builder)
-        rendered_toc = app.builder.render_partial(fulltoc)['fragment']
-        #print 'RENDERED: %r' % rendered_toc
-        context['toc'] = rendered_toc
-        context['display_toc'] = True  # force toctree to display
+    """Event handler for the html-page-context signal.
+
+    Modifies the context directly.
+
+     - Replaces the 'toc' value created by the HTML builder with one
+       that shows all document titles and the local table of contents.
+     - Sets display_toc to True so the table of contents is always
+       displayed, even on empty pages.
+     - Replaces the 'toctree' function with one that uses the entire
+       document structure, ignores the maxdepth argument, and uses
+       only prune and collapse.
+    """
+    rendered_toc = get_rendered_toctree(app.builder, pagename)
+    context['toc'] = rendered_toc
+    context['display_toc'] = True  # force toctree to display
+
+    def make_toctree(maxdepth=0, prune=False, collapse=True):
+        return get_rendered_toctree(app.builder,
+                                    pagename,
+                                    prune=prune,
+                                    collapse=collapse,
+                                    )
+    context['toctree'] = make_toctree
 
 
-def build_full_toctree(builder, docname, tree):
+def get_rendered_toctree(builder, docname, prune=False, collapse=True):
+    """Build the toctree relative to the named document,
+    with the given parameters, and then return the rendered
+    HTML fragment.
+    """
+    fulltoc = build_full_toctree(builder,
+                                 docname,
+                                 prune=prune,
+                                 collapse=collapse,
+                                 )
+    rendered_toc = builder.render_partial(fulltoc)['fragment']
+    return rendered_toc
+
+
+def build_full_toctree(builder, docname, prune, collapse):
     """Return a single toctree starting from docname containing all
     sub-document doctrees.
     """
@@ -57,9 +69,8 @@ def build_full_toctree(builder, docname, tree):
     toctrees = []
     for toctreenode in doctree.traverse(addnodes.toctree):
         toctree = env.resolve_toctree(docname, builder, toctreenode,
-                                      prune=False,
-                                      #titles_only=False,
-                                      #collapse=True,
+                                      collapse=collapse,
+                                      prune=prune,
                                       )
         toctrees.append(toctree)
     if not toctrees:
@@ -67,22 +78,9 @@ def build_full_toctree(builder, docname, tree):
     result = toctrees[0]
     for toctree in toctrees[1:]:
         result.extend(toctree.children)
+    env.resolve_references(result, docname, builder)
     return result
 
 
-def env_updated(app, env):
-    master_doctree = env.get_doctree(env.config.master_doc)
-    toctree = build_full_toctree(app.builder,
-                                 env.config.master_doc,
-                                 master_doctree,
-                                 )
-    env.fulltoc_toctree = toctree
-    print toctree
-    for node in toctree.traverse(nodes.reference):
-        print node.__class__.__name__, getattr(node, 'attributes', {})
-
-
 def setup(app):
-    app.connect('builder-inited', builder_inited)
     app.connect('html-page-context', html_page_context)
-    app.connect('env-updated', env_updated)
