@@ -16,6 +16,12 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+# Todo:
+# - config option to only show titles
+# - insert local toc entries
+# - write tests
+
+
 from docutils import nodes
 from sphinx import addnodes
 from sphinx.util.console import red, brown, darkgreen
@@ -46,40 +52,22 @@ def build_full_toctree(builder, docname, tree):
     """Return a single toctree starting from docname containing all
     sub-document doctrees.
     """
-    new_toctree = builder.env.get_toctree_for(docname,
-                                              builder,
-                                              collapse=False,
-                                              #maxdepth=1,
-                                              #titles_only=True,
-                                              )
-
-    for toctreenode in tree.traverse(addnodes.toctree):
-        includefiles = map(str, toctreenode['includefiles'])
-        for includefile in includefiles:
-            try:
-                subtree = build_full_toctree(
-                    builder,
-                    includefile,
-                    builder.env.get_doctree(includefile),
-                    )
-                subtree = builder.env.resolve_toctree(
-                    includefile,
-                    builder,
-                    subtree,
-                    )
-            except Exception as err:
-                #raise
-                builder.warn('%r' % err)
-                builder.warn('toctree contains ref to nonexisting '
-                             'file %r' % includefile,
-                             builder.env.doc2path(docname))
-            else:
-                #sof = addnodes.start_of_file(docname=includefile)
-                #sof.children = subtree.children
-                #print; print sof
-                #new_toctree.append(sof)
-                new_toctree.append(subtree)
-    return new_toctree
+    env = builder.env
+    doctree = env.get_doctree(env.config.master_doc)
+    toctrees = []
+    for toctreenode in doctree.traverse(addnodes.toctree):
+        toctree = env.resolve_toctree(docname, builder, toctreenode,
+                                      prune=False,
+                                      #titles_only=False,
+                                      #collapse=True,
+                                      )
+        toctrees.append(toctree)
+    if not toctrees:
+        return None
+    result = toctrees[0]
+    for toctree in toctrees[1:]:
+        result.extend(toctree.children)
+    return result
 
 
 def env_updated(app, env):
@@ -89,8 +77,9 @@ def env_updated(app, env):
                                  master_doctree,
                                  )
     env.fulltoc_toctree = toctree
-    # for node in toctree.traverse():
-    #     print node.document
+    print toctree
+    for node in toctree.traverse(nodes.reference):
+        print node.__class__.__name__, getattr(node, 'attributes', {})
 
 
 def setup(app):
