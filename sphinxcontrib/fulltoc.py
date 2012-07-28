@@ -77,7 +77,8 @@ def build_full_toctree(builder, docname, prune, collapse):
         return None
     result = toctrees[0]
     for toctree in toctrees[1:]:
-        result.extend(toctree.children)
+        if toctree:
+            result.extend(toctree.children)
     env.resolve_references(result, docname, builder)
     return result
 
