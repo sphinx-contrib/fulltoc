@@ -7,7 +7,7 @@ distribute_setup.use_setuptools()
 from setuptools import setup, find_packages
 
 try:
-    long_desc = open('README', 'r').read()
+    long_desc = open('README.rst', 'r').read()
 except IOError:
     long_desc = ''
 
