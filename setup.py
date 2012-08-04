@@ -16,7 +16,7 @@ requires = ['Sphinx>=0.6',
             ]
 
 NAME = 'sphinxcontrib-fulltoc'
-VERSION = '0.1'
+VERSION = '1.0'
 
 setup(
     name=NAME,
