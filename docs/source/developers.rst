@@ -19,6 +19,7 @@ following packages in order to build the docs:
 
 - Sphinx
 - docutils
+- sphinxcontrib-fulltoc
 
 Once all of the tools are installed into a virtualenv using pip, run
 ``python setup.py build_sphinx`` to generate the HTML version of the
