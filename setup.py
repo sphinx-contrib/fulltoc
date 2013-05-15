@@ -21,7 +21,7 @@ VERSION = '1.0'
 setup(
     name=NAME,
     version=VERSION,
-    url='http://sphinxcontrib-fulltox.readthedocs.org',
+    url='http://sphinxcontrib-fulltoc.readthedocs.org',
     license='Apache 2',
     author='Doug Hellmann',
     author_email='doug.hellmann@gmail.com',
