@@ -3,3 +3,8 @@ docs/build
 *.pyc
 *.egg-info
 build
+pbr-*.egg
+
+# Created by pbr
+AUTHORS
+ChangeLog
