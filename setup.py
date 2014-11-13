@@ -1,50 +1,29 @@
-# -*- coding: utf-8 -*-
+#!/usr/bin/env python
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+# implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 
-# Bootstrap installation of Distribute
+# THIS FILE IS MANAGED BY THE GLOBAL REQUIREMENTS REPO - DO NOT EDIT
+import setuptools
+
+# In python < 2.7.4, a lazy loading of package `pbr` will break
+# setuptools if some other modules registered functions in `atexit`.
+# solution from: http://bugs.python.org/issue15881#msg170215
 try:
-    import setuptools
+    import multiprocessing  # noqa
 except ImportError:
-    from distribute_setup import use_setuptools
-    use_setuptools()
+    pass
 
-from setuptools import setup, find_packages
-
-try:
-    long_desc = open('README.rst', 'r').read()
-except IOError:
-    long_desc = ''
-
-requires = ['Sphinx>=0.6',
-            'docutils>=0.6',
-            ]
-
-NAME = 'sphinxcontrib-fulltoc'
-VERSION = '1.0'
-
-setup(
-    name=NAME,
-    version=VERSION,
-    url='http://sphinxcontrib-fulltoc.readthedocs.org',
-    license='Apache 2',
-    author='Doug Hellmann',
-    author_email='doug.hellmann@gmail.com',
-    description='Include a full table of contents in your Sphinx HTML sidebar',
-    long_description=long_desc,
-    zip_safe=False,
-    classifiers=[
-        'Development Status :: 4 - Beta',
-        'Environment :: Console',
-        'Intended Audience :: Developers',
-        'License :: OSI Approved :: Apache Software License',
-        'Operating System :: OS Independent',
-        'Programming Language :: Python',
-        'Topic :: Documentation',
-        'Topic :: Utilities',
-    ],
-    platforms='any',
-    packages=find_packages(),
-    include_package_data=True,
-    install_requires=requires,
-    namespace_packages=['sphinxcontrib'],
-    py_modules=['distribute_setup'],
-)
+setuptools.setup(
+    setup_requires=['pbr'],
+    pbr=True)

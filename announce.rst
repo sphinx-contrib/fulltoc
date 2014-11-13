@@ -1,5 +1,5 @@
 ===========================
- sphinxcontrib-fulltoc 1.0
+ sphinxcontrib-fulltoc 1.1
 ===========================
 
 .. tags:: sphinx release python sphinxcontrib-fulltoc DreamHost
@@ -19,7 +19,8 @@ are also included in the appropriate place within the document.
 What's New?
 ===========
 
-- First public release
+- Installation under python 3 fixed (Piotr Bulinski)
+- Convert packaging to use pbr (Doug Hellmann)
 
 Installing
 ==========
