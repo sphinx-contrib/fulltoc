@@ -23,7 +23,10 @@ Basic Installation
       extensions = ['sphinxcontrib.fulltoc']
       ...
       
-3. Rebuild all of the HTML output for your project.
+3. Rebuild all of the HTML output for your project.  Note that this
+   extension is incompatible with the :hidden: option to the
+   toctree directive
+   
 
 Advanced Use
 ============
