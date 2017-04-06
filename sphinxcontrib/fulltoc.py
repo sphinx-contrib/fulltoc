@@ -37,16 +37,19 @@ def html_page_context(app, pagename, templatename, context, doctree):
     context['toc'] = rendered_toc
     context['display_toc'] = True  # force toctree to display
 
-    def make_toctree(collapse=True):
+    def make_toctree(collapse=True,maxdepth=-1,includehidden=False):
         return get_rendered_toctree(app.builder,
                                     pagename,
                                     prune=False,
                                     collapse=collapse,
+                                    includehidden=includehidden,
+                                    maxdepth= maxdepth,
                                     )
     context['toctree'] = make_toctree
 
 
-def get_rendered_toctree(builder, docname, prune=False, collapse=True):
+def get_rendered_toctree(builder, docname, prune=False, collapse=True,maxdepth=-1,
+                         includehidden=False):
     """Build the toctree relative to the named document,
     with the given parameters, and then return the rendered
     HTML fragment.
