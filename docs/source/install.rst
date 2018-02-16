@@ -53,8 +53,8 @@ The *Full* Full TOC
 
 If you do not want the table of contents collapsed to ignore
 subheadings on other pages, you can replace the ``{{ toc }}`` line in
-``localtoc.html`` with a call to ``toctree()``, which accepts two
-parameters.
+``localtoc.html`` with a call to ``toctree()``, which accepts a collapse 
+parameter.
 
 .. py:function:: toctree(collapse=True)
 
