@@ -37,6 +37,9 @@ def html_page_context(app, pagename, templatename, context, doctree):
     context['toc'] = rendered_toc
     context['display_toc'] = True  # force toctree to display
 
+    if "toc" in context:
+        # keeps original toc
+        context['localtoc'] = context['toc']
     if "toctree" not in context:
         # json builder doesn't use toctree func, so nothing to replace
         return
