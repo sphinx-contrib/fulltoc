@@ -68,7 +68,7 @@ def build_full_toctree(builder, docname, prune, collapse):
     sub-document doctrees.
     """
     env = builder.env
-    doctree = env.get_doctree(env.config.master_doc)
+    doctree = env.get_doctree(env.config.root_doc)
     toctrees = []
     for toctreenode in doctree.traverse(addnodes.toctree):
         toctree = env.resolve_toctree(docname, builder, toctreenode,
