@@ -1,0 +1,42 @@
+[build-system]
+build-backend = "setuptools.build_meta"
+
+requires = [
+  "setuptools>=68.2.2",
+  "wheel>=0.41.2",
+]
+
+[project]
+name = "sphinxcontrib-fulltoc"
+version = "1.2.1"
+description = "Include a full table of contents in your Sphinx HTML sidebar"
+readme = "README.rst"
+license = { file = "LICENSE" }
+
+authors = [
+  { name = "Doug Hellmann (original author)", email = "doug@doughellmann.com" },
+]
+classifiers = [
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+]
+dependencies = [
+]
+
+urls.homepage = "https://github.com/t-vi/sphinxcontrib-fulltoc"
+
+[tool.setuptools.packages.find]
+include = [
+  "sphinxcontrib",
+]
+exclude = [  ]
+
+[tool.setuptools.package-data]
+litgpt = [
+  "LICENSE",
+  "README.rst",
+]
