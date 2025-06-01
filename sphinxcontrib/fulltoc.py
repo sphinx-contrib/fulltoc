@@ -91,3 +91,6 @@ def build_full_toctree(builder, docname, prune, collapse):
 
 def setup(app):
     app.connect('html-page-context', html_page_context)
+    return {
+        "parallel_read_safe": True,
+    }
